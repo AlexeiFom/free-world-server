@@ -4,7 +4,7 @@ const passport = require('passport')
 const router = express.Router()
 const eventController = require('../controllers/scheduler')
 
-router.get('/events', passport.authenticate('jwt', { session: false }), eventController.getEvents)
+router.get('/events/:id', passport.authenticate('jwt', { session: false }), eventController.getEvents)
 
 router.post('/addEvent', eventController.addEvent)
 router.post('/delete', eventController.delete)

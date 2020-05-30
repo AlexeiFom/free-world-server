@@ -3,9 +3,8 @@ const Event = require('../models/event/Event')
 module.exports.addEvent = async function (req, resp) {
     console.log('Getting evebts...')
 
-    console.log(req.body)
-
     const newEvent = new Event({
+        userId: req.body.userId,
         date: req.body.date,
         text: req.body.text,
         isActive: req.body.isActive
@@ -20,8 +19,6 @@ module.exports.addEvent = async function (req, resp) {
 
             console.log('Created Success !')
 
-            console.log(event)
-
             resp.json({
                 message: 'Created Success !',
                 id: event._id
@@ -33,14 +30,13 @@ module.exports.addEvent = async function (req, resp) {
 module.exports.getEvents = async function (req, resp) {
     console.log('Getting Event')
 
-    const events = await Event.find()
+    const events = await Event.find({ userId: req.params.id })
 
     resp.send(events)
 }
 
 module.exports.delete = async function (req, res) {
     console.log('Deleting Event')
-    console.log(req.body.id)
 
     await Event.findById(req.body.id, (err, data) => {
 
