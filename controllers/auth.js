@@ -8,8 +8,6 @@ const User = require('../models/user/user')
 module.exports.login = async function (req, resp) {
     console.log('Login ...')
 
-    console.log('Test message ...')
-
     const userResult = await User.findOne({ email: req.body.email })
 
     if (userResult) {
