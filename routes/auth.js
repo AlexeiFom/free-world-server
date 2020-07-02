@@ -6,4 +6,6 @@ router.post('/login', eventController.login)
 
 router.post('/register', eventController.register)
 
+router.post('/resetPassword', eventController.resetPassword)
+
 module.exports = router 

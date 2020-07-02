@@ -5,6 +5,58 @@ const errorHandler = require('../utils/errorHandler')
 
 const User = require('../models/user/user')
 
+const nodemailer = require('../config/nodemailer-confg')
+
+module.exports.resetPassword = async function (req, resp) {
+    console.log('Reseting password ...')
+
+    console.log(req.body.email)
+    console.log(req.body.domain)
+
+    const userResult = await User.findOne({ email: req.body.email })
+
+    if (!userResult) {
+        console.log('User is not founded')
+
+        resp.status(404).json({
+            message: 'User with this email is not found'
+        })
+    }
+
+    if (userResult) {
+        console.log('User is exists')
+
+        console.log(userResult)
+
+        const token = 'Bearer ' + jwt.sign({
+            email: userResult.email,
+            userId: userResult._id
+        },
+            keys.jwt,
+            {
+                expiresIn: 60 * 60
+            }
+        )
+
+        console.log(token)
+        //send email
+
+        nodemailer.sendEmail(req.body.domain, token)
+        .then(
+            console.log('Success')
+        )
+        .catch(
+            console.log('Error...')
+        )
+
+
+
+        resp.status(200).json({
+            message: 'User is exists'
+        })
+    }
+}
+
 module.exports.login = async function (req, resp) {
     console.log('Login ...')
 
@@ -84,3 +136,4 @@ module.exports.register = async function (req, resp) {
         }
     }
 }
+
